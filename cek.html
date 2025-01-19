@@ -24,7 +24,7 @@
             background-color: aqua;
             border-radius: 5px;
             cursor: pointer;
-            box-shadow: 0 0 5px cyan, 0 0 0 6px cyan;
+            box-shadow: 0 0 5px cyan, 0 0 0 6px cyan ;
         }
         button:hover {
             box-shadow: 0 0 5px cyan, 0 0 0 10px cyan, 0 0 15px cyan, 0 0 20px cyan, 0 0 200px cyan;
@@ -40,71 +40,41 @@
             top: 10px;
             max-width: 30%;
         }
-        @media (max-width: 768px) {
-            img {
-                max-width: 50%;
-                position: static;
-                display: block;
-                margin: 0 auto;
-            }
-            div {
-                text-align: center;
-            }
-            button {
-                text-align: center;
-            }
-            div p {
-                text-align: left;
-            }
-        }
-
     </style>
 </head>
 <body>
-    <p>Oke, terimakasih!!. Data Anda telah masuk.</p>
+    <h3>Data Anda:</h3>
+
     <div id="data-container">
         <!-- Data akan ditampilkan di sini -->
     </div>
 
-    <form id="data-form">
-        <input type="text" id="username" name="username" placeholder="Username" required><br>
-        <input type="email" id="email" name="email" placeholder="Email" required><br>
-        <textarea id="pesan" name="pesan" placeholder="Pesan" required></textarea><br>
-        <input type="file" id="image" name="image"><br>
-        <button type="submit">Kirim</button>
+    <form action="index.html" method="get">
+        <button type="submit">Kembali</button>
     </form>
 
     <script>
-        document.getElementById("data-form").addEventListener("submit", function(e) {
-            e.preventDefault(); // Mencegah pengiriman form tradisional
+        // Menangani data yang dikirimkan ke cek.html
+        const params = new URLSearchParams(window.location.search);
+        const username = params.get("username");
+        const email = params.get("email");
+        const pesan = params.get("pesan");
+        const image = params.get("image"); // URL gambar (jika ada)
 
-            // Ambil data dari form
-            const username = document.getElementById("username").value;
-            const email = document.getElementById("email").value;
-            const pesan = document.getElementById("pesan").value;
-            const image = document.getElementById("image").files[0]; // Ambil file gambar
+        // Menampilkan data di halaman
+        const dataContainer = document.getElementById("data-container");
 
-            // Mengubah file gambar menjadi URL sementara
-            const imageUrl = image ? URL.createObjectURL(image) : '';
-
-            // Menampilkan data pengguna di halaman
-            const dataContainer = document.getElementById("data-container");
-
-            dataContainer.innerHTML = `
-                <div style="margin:20px ; border: 1px solid; border-radius: 2px; box-shadow: 0 0 5px cyan; position: relative;">
-                    <div style="text-align: center;">
-                        <h3>Ini adalah data Anda:</h3>
-                    </div>
-                    <img src="${imageUrl}" alt="${image ? image.name : 'No image'}">
-                    <p><strong>Username:</strong> ${username}</p>
-                    <p><strong>Email:</strong> ${email}</p>
-                    <p><strong>Pesan:</strong> ${pesan}</p>
+        dataContainer.innerHTML = `
+            <div style="margin:20px ; border: 1px solid; border-radius: 2px; box-shadow: 0 0 5px cyan; position: relative;">
+                <div style="text-align: center;">
+                    <h3>Ini adalah data Anda:</h3>
                 </div>
-                <form action="index.html" method="get">
-                    <button type="submit">Kembali</button>
-                </form>
-            `;
-        });
+                <img src="${image}" alt="Gambar Pengguna" />
+                <p><strong>Username:</strong> ${username}</p>
+                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Pesan:</strong> ${pesan}</p>
+            </div>
+        `;
     </script>
 </body>
 </html>
