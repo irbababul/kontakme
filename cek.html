@@ -1,13 +1,3 @@
-<?php 
-if (isset($_POST['login'])) { //isset jika tombol login di klik
-    $username = ($_POST['username'] ?? '');
-    $email = ($_POST['email'] ?? '');
-    $pesan = ($_POST['pesan'] ?? '');
-    $image = ($_POST['image'] ?? '');
-}
-?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,7 +24,7 @@ if (isset($_POST['login'])) { //isset jika tombol login di klik
             background-color: aqua;
             border-radius: 5px;
             cursor: pointer;
-            box-shadow: 0 0 5px cyan, 0 0 0 6px cyan ;
+            box-shadow: 0 0 5px cyan, 0 0 0 6px cyan;
         }
         button:hover {
             box-shadow: 0 0 5px cyan, 0 0 0 10px cyan, 0 0 15px cyan, 0 0 20px cyan, 0 0 200px cyan;
@@ -49,7 +39,6 @@ if (isset($_POST['login'])) { //isset jika tombol login di klik
             right: 10px;
             top: 10px;
             max-width: 30%;
-
         }
         @media (max-width: 768px) {
             img {
@@ -62,10 +51,10 @@ if (isset($_POST['login'])) { //isset jika tombol login di klik
                 text-align: center;
             }
             button {
-                text-align: center ;
+                text-align: center;
             }
             div p {
-                text-align: left ;
+                text-align: left;
             }
         }
 
@@ -73,22 +62,49 @@ if (isset($_POST['login'])) { //isset jika tombol login di klik
 </head>
 <body>
     <p>Oke, terimakasih!!. Data Anda telah masuk.</p>
-    <div>
-
-        <div style="margin:20px  ; border: 1px solid; border-radius : 2px ; box-shadow: 0 0 5px cyan ; position: relative; ">
-            <div style="text-align: center;" >
-                <h3>Ini adalah data Anda:</h3>
-            </div>
-            <img src="<?php echo $image;?>" alt="<?php echo $image;?>">
-            <p><strong>Username:</strong> <?php echo $username; ?></p>
-            <p><strong>Email:</strong> <?php echo $email; ?></p>
-            <p><strong>Pesan:</strong> <?php echo $pesan; ?></p>
-        </div>
-        <form action="index.php" method="get">
-            <button type="submit">Kembali</button>
-        </form>
+    <div id="data-container">
+        <!-- Data akan ditampilkan di sini -->
     </div>
 
+    <form id="data-form">
+        <input type="text" id="username" name="username" placeholder="Username" required><br>
+        <input type="email" id="email" name="email" placeholder="Email" required><br>
+        <textarea id="pesan" name="pesan" placeholder="Pesan" required></textarea><br>
+        <input type="file" id="image" name="image"><br>
+        <button type="submit">Kirim</button>
+    </form>
+
+    <script>
+        document.getElementById("data-form").addEventListener("submit", function(e) {
+            e.preventDefault(); // Mencegah pengiriman form tradisional
+
+            // Ambil data dari form
+            const username = document.getElementById("username").value;
+            const email = document.getElementById("email").value;
+            const pesan = document.getElementById("pesan").value;
+            const image = document.getElementById("image").files[0]; // Ambil file gambar
+
+            // Mengubah file gambar menjadi URL sementara
+            const imageUrl = image ? URL.createObjectURL(image) : '';
+
+            // Menampilkan data pengguna di halaman
+            const dataContainer = document.getElementById("data-container");
+
+            dataContainer.innerHTML = `
+                <div style="margin:20px ; border: 1px solid; border-radius: 2px; box-shadow: 0 0 5px cyan; position: relative;">
+                    <div style="text-align: center;">
+                        <h3>Ini adalah data Anda:</h3>
+                    </div>
+                    <img src="${imageUrl}" alt="${image ? image.name : 'No image'}">
+                    <p><strong>Username:</strong> ${username}</p>
+                    <p><strong>Email:</strong> ${email}</p>
+                    <p><strong>Pesan:</strong> ${pesan}</p>
+                </div>
+                <form action="index.html" method="get">
+                    <button type="submit">Kembali</button>
+                </form>
+            `;
+        });
+    </script>
 </body>
 </html>
-
